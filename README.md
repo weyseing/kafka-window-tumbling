@@ -45,32 +45,33 @@
 
 **IMPORTANT:** MUST RECREATE the `table_hourly_order_count` table in KSQL to avoid incorrect future window.
 
-Assume window size is 1 hour.  
-Example "current time" is `2024-05-14 09:15:00`.
+- Check Ksql table result.
+    > ```sql
+    > SELECT product, order_count, from_unixtime(window_start) AS window_start, from_unixtime(window_end) AS window_end FROM table_hourly_order_count EMIT CHANGES;
+    > ```
 
-- Latest window: 09:00:00 to 10:00:00 on `2024-05-14`
-- Grace period for this window ends: `2024-05-16 10:00:00`
+- **Windows & Grace Period**
+    - The window size is 5 minutes. Example "current time" is `2024-05-14 09:14:00`.
+    - Latest window: `09:10:00` to `09:15:00` on `2024-05-14`
+    - Grace period for this window ends: `2024-05-16 09:15:00`
 
-1. **Insert with latest window create_date**
+- **Insert with latest window create_date (inside window)**
    ```sql
    INSERT INTO `order` (product, amount, buyer_id, create_date)
-   VALUES ('Widget', 1, 1, '2024-05-14 09:50:00');
+   VALUES ('Widget', 1, 1, '2024-05-14 09:14:00');
    ```
-   - ✅ Included in the most recent window (on time).
+   - ✅ Included in the latest window.
 
-2. **Insert with create_date at earliest window border, arrives at grace period limit**
+- **Insert at the window border (start time), as if arriving before grace period ended**
    ```sql
-   -- Window covers 09:00:00 to 10:00:00 on 2024-05-14
-   -- Grace period ends at 2024-05-16 10:00:00
    INSERT INTO `order` (product, amount, buyer_id, create_date)
-   VALUES ('Widget', 2, 1, '2024-05-14 09:00:00');
+   VALUES ('Widget', 2, 1, '2024-05-12 09:10:00');
    ```
-   - ✅ Included if this arrives any time up to `2024-05-16 10:00:00`.
+    - ✅ Included in the `2024-05-12 09:10:00` to `09:15:00` window if ingested before or at `2024-05-14 09:15:00`.
 
-3. **Insert with create_date in window, but arrives after the grace period ends**
+- **Insert just before the window (misses the next window)**
    ```sql
-   -- This record is inserted after 2024-05-16 10:00:00
    INSERT INTO `order` (product, amount, buyer_id, create_date)
-   VALUES ('Widget', 3, 1, '2024-05-14 09:05:00');
+   VALUES ('Widget', 3, 1, '2024-05-12 09:09:59');
    ```
-   - ❌ Not included if ingested by ksqlDB after the grace period (`2024-05-16 10:00:00`).
+   - ❌ Not included because the grace period for the previous window `2024-05-12 09:05:00–09:10:00` is already over.
