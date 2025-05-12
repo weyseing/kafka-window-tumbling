@@ -1,5 +1,5 @@
 # Setup
-- Create all connectors in `connector` folder.
+- Create all Kafka connectors in `connector` folder.
 - Create all Ksql streams/tables in `ksql` folder.
 - `db_data.order` will be used as **sample data table**.
 
