@@ -40,4 +40,37 @@
         > WINDOW_START = 2024-05-12T09:35:00.000
         > ```
 
-# Grace Period
+# Grace Period: Counting Late Events
+**GRACE PERIOD** in ksqlDB windowed aggregations defines how long after a window closes late-arriving events can still be added to that window; once the grace period ends, any records for that window will be ignored and will not appear in the results.
+
+**IMPORTANT:** MUST RECREATE the `table_hourly_order_count` table in KSQL to avoid incorrect future window.
+
+Assume window size is 1 hour.  
+Example "current time" is `2024-05-14 09:15:00`.
+
+- Latest window: 09:00:00 to 10:00:00 on `2024-05-14`
+- Grace period for this window ends: `2024-05-16 10:00:00`
+
+1. **Insert with latest window create_date**
+   ```sql
+   INSERT INTO `order` (product, amount, buyer_id, create_date)
+   VALUES ('Widget', 1, 1, '2024-05-14 09:50:00');
+   ```
+   - ✅ Included in the most recent window (on time).
+
+2. **Insert with create_date at earliest window border, arrives at grace period limit**
+   ```sql
+   -- Window covers 09:00:00 to 10:00:00 on 2024-05-14
+   -- Grace period ends at 2024-05-16 10:00:00
+   INSERT INTO `order` (product, amount, buyer_id, create_date)
+   VALUES ('Widget', 2, 1, '2024-05-14 09:00:00');
+   ```
+   - ✅ Included if this arrives any time up to `2024-05-16 10:00:00`.
+
+3. **Insert with create_date in window, but arrives after the grace period ends**
+   ```sql
+   -- This record is inserted after 2024-05-16 10:00:00
+   INSERT INTO `order` (product, amount, buyer_id, create_date)
+   VALUES ('Widget', 3, 1, '2024-05-14 09:05:00');
+   ```
+   - ❌ Not included if ingested by ksqlDB after the grace period (`2024-05-16 10:00:00`).
