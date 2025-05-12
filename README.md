@@ -1,7 +1,7 @@
 # Setup
 - Create all Kafka connectors in `connector` folder.
 - Create all Ksql streams/tables in `ksql` folder.
-- `db_data.order` will be used as **sample data table**.
+- `db_data.order` will be used as **sample table** in MySQL DB.
 
 # Control Timestamp
 - To use your own timestamp field for the stream, set the `TIMESTAMP` option in the `WITH` clause. This tells ksqlDB to use your chosen field as the event time instead of the default.
