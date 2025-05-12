@@ -43,7 +43,7 @@
 # Grace Period: Counting Late Events
 **GRACE PERIOD** in ksqlDB windowed aggregations defines how long after a window closes late-arriving events can still be added to that window; once the grace period ends, any records for that window will be ignored and will not appear in the results.
 
-**IMPORTANT:** MUST RECREATE the `table_hourly_order_count` table in KSQL to avoid incorrect future window.
+**IMPORTANT:** MUST RECREATE the `table_hourly_order_count` table in KSQL DB to avoid incorrect future window.
 
 - Check Ksql table result.
     > ```sql
@@ -51,7 +51,7 @@
     > ```
 
 - **Windows & Grace Period**
-    - The window size is 5 minutes. Example "current time" is `2024-05-14 09:14:00`.
+    - The window size is **5 minutes** & **2 days** grace period. Example "current time" is `2024-05-14 09:14:00`.
     - Latest window: `09:10:00` to `09:15:00` on `2024-05-14`
     - Grace period for this window ends: `2024-05-16 09:15:00`
 
