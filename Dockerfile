@@ -1,6 +1,5 @@
 # base image
 FROM confluentinc/cp-server-connect-base:7.9.0
-ENV CONNECT_PLUGIN_PATH="/usr/share/java,/usr/share/confluent-hub-components"
 
 # worker dir, user
 WORKDIR /connect
