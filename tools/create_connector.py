@@ -32,11 +32,23 @@ if __name__ == "__main__":
     # replace env
     json_data = replace_env(json_data)
 
+    # custom config
+    if (json_data['connector.class'] == "io.debezium.connector.mysql.MySqlConnector"):
+        connector_class  = "source_debezium"
+        topic_name = connector_class + ".local_db." + json_data['table.include.list']
+        connector_name = topic_name + "_" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        
+        # default value
+        json_data["database.server.id"] = datetime.now().strftime("%Y%m%d%H%M%S")
+        json_data["errors.deadletterqueue.topic.name"] = "dlq_" + topic_name
+        json_data["schema.history.internal.kafka.topic"] = "schema_history_" + topic_name
+        json_data["topic.prefix"] = connector_class + ".local_db"
+
     # create connector API
     url = "http://"+str(os.environ.get("CONNECTOR_USER"))+":"+str(os.environ.get("CONNECTOR_PASS"))+"@localhost:8083/connectors"
     headers = {"content-type": "application/json"}
     req_data = {
-        "name": json_data["name"],
+        "name": connector_name,
         "config": json_data
     }
     response = requests.post(url, headers=headers, json=req_data)

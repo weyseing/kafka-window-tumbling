@@ -1,13 +1,12 @@
 {
   "connector.class": "io.debezium.connector.mysql.MySqlConnector",
-  "name": "<EDIT: connector name, example=source_debezium_XXX>",
 
   "database.hostname": "<EDIT: env for DB host>",
   "database.port": "<EDIT: env for DB port>",
   "database.user": "<EDIT: env for DB user>",
   "database.password": "<EDIT: env for DB password>",
   "database.ssl.mode": "preferred",
-  "database.server.id": "123456",
+  "database.server.id": "DEFAULT",
 
   "database.include.list": "<EDIT: database name, example=db_data>",
   "table.include.list": "<EDIT: table name, example=db_data.order>",
@@ -21,7 +20,7 @@
   "heartbeat.action.query": "<EDIT: SELECT SQL, MUST LIMIT 1>",
 
   "tombstones.on.delete": "false",
-  "topic.prefix": "source_debezium",
+  "topic.prefix": "DEFAULT",
 
   "value.converter.schemas.enable": "true",
   "value.converter": "io.confluent.connect.avro.AvroConverter",
@@ -38,14 +37,14 @@
   "errors.log.enable": "true",
   "errors.tolerance": "all",
   "errors.deadletterqueue.context.headers.enable": "true",
-  "errors.deadletterqueue.topic.name": "dlq_debezium_source",
+  "errors.deadletterqueue.topic.name": "DEFAULT",
   "errors.deadletterqueue.topic.replication.factor": "$TOPIC_REPLICATION",
 
   "topic.creation.enable": "true",
   "topic.creation.default.partitions": "$TOPIC_PARTITION",
   "topic.creation.default.replication.factor": "$TOPIC_REPLICATION",
 
-  "schema.history.internal.kafka.topic": "schema_history_debezium_source",
+  "schema.history.internal.kafka.topic": "DEFAULT",
   "schema.history.internal.kafka.bootstrap.servers": "$BROKER_ENDPOINT",
 
   "schema.history.internal.consumer.security.protocol": "$BROKER_SECURITY_PROTOCOL",
