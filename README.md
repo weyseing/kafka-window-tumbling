@@ -56,22 +56,22 @@
     - Grace period for this window ends: `2024-05-16 09:15:00`
 
 - **Insert with latest window create_date (inside window)**
-   ```sql
-   INSERT INTO `order` (product, amount, buyer_id, create_date)
-   VALUES ('Widget', 1, 1, '2024-05-14 09:14:00');
-   ```
+   > ```sql
+   > INSERT INTO `order` (product, amount, buyer_id, create_date)
+   > VALUES ('Widget', 1, 1, '2024-05-14 09:14:00');
+   > ```
    - ✅ Included in the latest window.
 
 - **Insert at the window border (start time), as if arriving before grace period ended**
-   ```sql
-   INSERT INTO `order` (product, amount, buyer_id, create_date)
-   VALUES ('Widget', 2, 1, '2024-05-12 09:10:00');
-   ```
+   > ```sql
+   > INSERT INTO `order` (product, amount, buyer_id, create_date)
+   > VALUES ('Widget', 2, 1, '2024-05-12 09:10:00');
+   > ```
     - ✅ Included in the `2024-05-12 09:10:00` to `09:15:00` window if ingested before `2024-05-14 09:15:00`.
 
-- **Insert just before the window (misses the next window)**
-   ```sql
-   INSERT INTO `order` (product, amount, buyer_id, create_date)
-   VALUES ('Widget', 3, 1, '2024-05-12 09:09:59');
-   ```
+- **Insert with create_date just before the window (too late for any window)**
+   > ```sql
+   > INSERT INTO `order` (product, amount, buyer_id, create_date)
+   > VALUES ('Widget', 3, 1, '2024-05-12 09:09:59');
+   > ```
    - ❌ Not included because the grace period for the previous window `2024-05-12 09:05:00–09:10:00` is already over.
