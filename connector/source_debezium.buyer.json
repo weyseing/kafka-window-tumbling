@@ -1,24 +1,24 @@
 {
   "connector.class": "io.debezium.connector.mysql.MySqlConnector",
-  "name": "source_debezium_order",
+  "name": "source_debezium_buyer",
 
   "database.hostname": "$DB_LOCAL_URL",
   "database.port": "$DB_LOCAL_PORT",
   "database.user": "$DB_LOCAL_USER",
   "database.password": "$DB_LOCAL_PASS",
   "database.ssl.mode": "preferred",
-  "database.server.id": "202505121500",
+  "database.server.id": "202505121540",
 
   "database.include.list": "db_data",
-  "table.include.list": "db_data.order",
+  "table.include.list": "db_data.buyer",
 
   "snapshot.mode": "when_needed",
   "snapshot.locking.mode": "none",
-  "snapshot.select.statement.overrides": "db_data.order",
-  "snapshot.select.statement.overrides.db_data.order": "SELECT * FROM db_data.order;",
+  "snapshot.select.statement.overrides": "db_data.buyer",
+  "snapshot.select.statement.overrides.db_data.buyer": "SELECT * FROM db_data.buyer;",
 
   "heartbeat.interval.ms": "10000",
-  "heartbeat.action.query": "SELECT * FROM db_data.order LIMIT 1;",
+  "heartbeat.action.query": "SELECT * FROM db_data.buyer LIMIT 1;",
 
   "tombstones.on.delete": "false",
   "topic.prefix": "source_debezium",
