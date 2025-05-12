@@ -75,3 +75,36 @@
    > VALUES ('Widget', 3, 1, '2024-05-12 09:09:59');
    > ```
    - ❌ Not included because the grace period for the previous window `2024-05-12 09:05:00–09:10:00` is already over.
+
+# Grace Period: How Latest Window Is Determined
+The **latest window** is determined by the **most recent timestamp** in KsqlDB table, not by the current time. The grace period for late events is counted from the end of that latest window.
+
+**IMPORTANT:** MUST RECREATE the `table_hourly_order_count` table in KSQL DB to avoid incorrect future window.
+
+- Check Ksql table result.
+    > ```sql
+    > SELECT product, order_count, from_unixtime(window_start) AS window_start, from_unixtime(window_end) AS window_end FROM table_hourly_order_count EMIT CHANGES;
+    > ```
+
+- **Oldest date remains the latest window**
+    > ```sql
+    > INSERT INTO `order` (product, amount, buyer_id, create_date)
+    > VALUES ('Widget', 1, 1, '2024-05-12 09:07:00');
+    > 
+    > INSERT INTO `order` (product, amount, buyer_id, create_date)
+    > VALUES ('Widget', 2, 1, '2024-05-10 09:07:00');
+    > ```
+    - The latest window is for `2024-05-12 09:05:00–09:10:00`, so the grace period is counted from `2024-05-12 09:10:00`.
+    - Both records appear, as the grace period for this window is still open.
+
+
+- **New recent data closes old windows**
+    > ```sql
+    > INSERT INTO `order` (product, amount, buyer_id, create_date)
+    > VALUES ('Widget', 3, 1, '2024-05-14 09:07:00');
+    > 
+    > INSERT INTO `order` (product, amount, buyer_id, create_date)
+    > VALUES ('Widget', 4, 1, '2024-05-10 09:07:00');
+    > ```
+    - Now the latest window is `2024-05-14 09:05:00–09:10:00`, so the grace period is from `2024-05-14 09:10:00`.
+    - The second record (`2024-05-10 09:07:00`) is ignored because the grace period for that window has already expired.
