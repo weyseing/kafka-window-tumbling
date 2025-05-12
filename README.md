@@ -67,7 +67,7 @@
    INSERT INTO `order` (product, amount, buyer_id, create_date)
    VALUES ('Widget', 2, 1, '2024-05-12 09:10:00');
    ```
-    - ✅ Included in the `2024-05-12 09:10:00` to `09:15:00` window if ingested before or at `2024-05-14 09:15:00`.
+    - ✅ Included in the `2024-05-12 09:10:00` to `09:15:00` window if ingested before `2024-05-14 09:15:00`.
 
 - **Insert just before the window (misses the next window)**
    ```sql
