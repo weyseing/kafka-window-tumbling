@@ -1,0 +1,1 @@
+python /connect/tools/create_connector.py $1 | jq .

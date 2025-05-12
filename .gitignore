@@ -1,0 +1,68 @@
+# Binary/object files across languages (C/C++, Go, etc.)
+*.o
+*.out
+*.so
+*.a
+*.class
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Package manager files
+*.rpm
+*.deb
+
+# System and Red Hat specific
+core
+*swp
+*~
+.DS_Store
+.sudo_as_admin_successful
+.redhat-release
+
+# Temporary and editor files
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+.#*
+
+# Build directories
+build/
+dist/
+tmp/
+cache/
+.venv/
+.env/
+env/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDE/project files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Docker & Compose
+*.pid
+*.sock
+docker-compose.override.yml
+.env
+
+# SSH, keys, secrets
+*.pem
+*.key
+
+# Misc
+tags
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# Ignore everything in backup directories
+backup/

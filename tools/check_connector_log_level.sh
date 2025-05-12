@@ -1,0 +1,1 @@
+curl -Ss http://$CONNECTOR_USER:$CONNECTOR_PASS@localhost:8083/admin/loggers | jq .
