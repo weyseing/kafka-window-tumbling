@@ -3,7 +3,7 @@
 - Create all Ksql streams/tables in `ksql` folder.
 - `db_data.order` will be used as **sample table** in MySQL DB.
 
-# Control Timestamp
+# Controlling Event Timestamp
 - To use your own timestamp field for the stream, set the `TIMESTAMP` option in the `WITH` clause. This tells ksqlDB to use your chosen field as the event time instead of the default.
     > ```sql
     > ...
@@ -37,7 +37,7 @@
     - The record will be grouped into the window according to the actual **create_date** value.
         > ```shell
         > CREATE_DATE = 2024-05-12T09:37:00
-        > WINDOW_START = 2024-05-12T09:35:00.000
+        > WINDOW_START = 2024-05-12T09:35:00
         > ```
 
 # Grace Period: Counting Late Events
