@@ -21,7 +21,7 @@
   "heartbeat.action.query": "<EDIT: SELECT SQL, MUST LIMIT 1>",
 
   "tombstones.on.delete": "false",
-  "topic.prefix": "debezium_source",
+  "topic.prefix": "source_debezium",
 
   "value.converter.schemas.enable": "true",
   "value.converter": "io.confluent.connect.avro.AvroConverter",

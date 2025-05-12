@@ -1,6 +1,6 @@
 {
   "connector.class": "io.debezium.connector.mysql.MySqlConnector",
-  "name": "source_debezium_JOIN1",
+  "name": "source_debezium_order",
 
   "database.hostname": "$DB_LOCAL_URL",
   "database.port": "$DB_LOCAL_PORT",
@@ -21,7 +21,7 @@
   "heartbeat.action.query": "SELECT * FROM db_data.order LIMIT 1;",
 
   "tombstones.on.delete": "false",
-  "topic.prefix": "debezium_source",
+  "topic.prefix": "source_debezium",
 
   "value.converter.schemas.enable": "true",
   "value.converter": "io.confluent.connect.avro.AvroConverter",
