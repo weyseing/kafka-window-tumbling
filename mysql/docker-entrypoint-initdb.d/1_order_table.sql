@@ -1,7 +1,7 @@
 USE db_data;
 
 CREATE TABLE IF NOT EXISTS `order` (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   product VARCHAR(100),
   amount INT,
   buyer_id INT,
